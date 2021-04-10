@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.marvel.characters.view.activity.splash.SplashViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_container_splashActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:visibility="@{viewModel.isShowLoader()?View.VISIBLE : View.GONE}">
+
+        <com.jgabrielfreitas.core.BlurImageView
+            android:id="@+id/ivSplashBG"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/mcu_background"
+            app:radius="4" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@color/transparent_more_black" />
+
+        <ImageView
+            android:layout_width="@dimen/padding_200"
+            android:layout_height="@dimen/padding_200"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/splash_logo" />
+
+    </RelativeLayout>
+</layout>

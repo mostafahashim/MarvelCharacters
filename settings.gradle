@@ -1,2 +1,3 @@
+include ':imageviewer'
 include ':app'
 rootProject.name = "MarvelCharacters"
