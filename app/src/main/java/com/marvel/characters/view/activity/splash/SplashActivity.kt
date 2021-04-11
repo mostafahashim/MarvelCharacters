@@ -14,7 +14,7 @@ import com.marvel.characters.view.activity.main.MainActivity
 
 class SplashActivity : BaseActivity(
     R.string.app_name, false, false, false,
-    false, false, false, false,
+    false, false, false, false, false,
 ) {
 
     lateinit var binding: ActivitySplashBinding

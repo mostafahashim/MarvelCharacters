@@ -8,5 +8,6 @@ open class ParentResponseModel : BaseObservable() {
     lateinit var attributionText: String
     lateinit var attributionHTML: String
     lateinit var etag: String
-    var code = 0
+    var message = ""
+    var code = ""
 }

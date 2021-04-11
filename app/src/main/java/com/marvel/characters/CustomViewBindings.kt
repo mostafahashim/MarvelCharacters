@@ -178,7 +178,7 @@ class CustomViewBindings {
                     val requestOptions = RequestOptions.bitmapTransform(transformation)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                     val thumbnail: RequestBuilder<Drawable> = Glide.with(imageView)
-                        .load(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent)
+                        .load(R.drawable.image_placeholder)
                         .apply(requestOptions)
 
                     Glide.with(imageView).load(imageUrlRoundTopRect)

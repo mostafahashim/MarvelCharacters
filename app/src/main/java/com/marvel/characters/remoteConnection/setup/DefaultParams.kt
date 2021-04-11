@@ -1,8 +1,12 @@
 package com.marvel.characters.remoteConnection.setup
 
+import android.os.SystemClock
 import com.marvel.characters.BuildConfig
 import com.marvel.characters.MyApplication
+import com.marvel.characters.util.HashUtil
 import com.marvel.characters.util.Preferences
+import com.marvel.characters.util.PrivateKeyMarvel
+import com.marvel.characters.util.PublicKeyMarvel
 import okhttp3.MultipartBody
 import kotlin.collections.HashMap
 
@@ -10,9 +14,10 @@ fun getDefaultParams(
     application: MyApplication,
     params: HashMap<String, Any>
 ): MutableMap<String, Any> {
-    params["appid"] = "8fa4589dfa68cb117ddeb64b68e27777"
-    params["units"] = "metric"
-    params["lang"] = Preferences.getApplicationLocale()
+    params["apikey"] = "2bd481c7a55f24e9b5645495f192a5ae"
+    var currentTimeStamp = SystemClock.elapsedRealtime()
+    params["hash"] = HashUtil().toMD5("$currentTimeStamp$PrivateKeyMarvel$PublicKeyMarvel")
+    params["ts"] = currentTimeStamp
     return params
 }
 

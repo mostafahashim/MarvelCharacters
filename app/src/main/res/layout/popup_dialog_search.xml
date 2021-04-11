@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_15">
+
+            <TextView
+                android:id="@+id/tvCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/padding_16"
+                android:layout_marginEnd="@dimen/padding_20"
+                android:background="@drawable/layout_bg_transparent_gray_selector_with_bg_transparent"
+                android:fontFamily="@font/avenir_heavy"
+                android:includeFontPadding="false"
+                android:padding="@dimen/padding_5"
+                android:text="@string/cancel"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/font_size_16" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_15"
+                android:layout_toStartOf="@+id/tvCancel"
+                android:background="@drawable/big_round_corner_color_primary_selector"
+                android:padding="@dimen/padding_5">
+
+                <ImageView
+                    android:id="@+id/ivSearch_popupdialog_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/circle_bg_transparent_with_transparent_gray_selector"
+                    android:padding="@dimen/padding_10"
+                    android:src="@drawable/search_white_icon" />
+
+                <EditText
+                    android:id="@+id/edttxt_search_popupdialog_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/ivSearch_popupdialog_search"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center_vertical"
+                    android:hint="@string/search_for_a_character"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="@dimen/padding_10"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/silver"
+                    android:textSize="@dimen/font_size_16"
+                    android:textStyle="normal" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/progress_bar_popupdialog_search"
+            style="@style/AVLoadingIndicatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/padding_5"
+            android:visibility="visible"
+            app:indicatorColor="@color/colorAccent"
+            app:indicatorName="BallPulseIndicator" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listView_popupdialog_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" />
+
+    </LinearLayout>
+</layout>

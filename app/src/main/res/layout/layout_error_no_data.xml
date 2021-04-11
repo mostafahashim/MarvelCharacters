@@ -27,7 +27,7 @@
             android:gravity="center"
             android:includeFontPadding="false"
             android:text="@string/empty"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/white"
             android:textSize="@dimen/font_size_33" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:includeFontPadding="false"
             android:lineSpacingExtra="@dimen/padding_10"
             android:text="@string/no_data_found"
-            android:textColor="@color/taupe"
+            android:textColor="@color/white"
             android:textSize="@dimen/font_size_14" />
 
     </LinearLayout>

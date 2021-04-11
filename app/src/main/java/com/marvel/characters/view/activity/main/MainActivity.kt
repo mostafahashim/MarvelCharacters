@@ -18,11 +18,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.marvel.characters.R
 import com.marvel.characters.databinding.ActivityMainBinding
 import com.marvel.characters.posterUtil.PosterOverlayView
+import com.marvel.characters.remoteConnection.setup.isInternetAvailable
 import com.marvel.characters.util.DataProvider
 import com.marvel.characters.util.RequestCodeCaptureActivity
 import com.marvel.characters.util.ScreenSizeUtils
@@ -33,10 +35,9 @@ import io.reactivex.schedulers.Schedulers
 import java.io.ByteArrayOutputStream
 import java.io.File
 
-
 class MainActivity : BaseActivity(
-    R.string.app_name, true, false, true,
-    false, false, false, false,
+    R.string.app_name, false, false, true,
+    false, false, true,true, false,
 ), MainViewModel.Observer {
 
     lateinit var binding: ActivityMainBinding
@@ -57,25 +58,58 @@ class MainActivity : BaseActivity(
 
 
     override fun initializeViews() {
-        var isLandScape = false
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            isLandScape = true
-            binding.recyclerView.layoutManager = GridLayoutManager(this, 4)
-//            var screenWidth: Int = ScreenSizeUtils().getScreenWidth(this)
-//            binding.viewModel!!.updateBooksAdapterColumnWidth(screenWidth)
-        } else if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            isLandScape = false
-            binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
-//            var screenWidth: Int = ScreenSizeUtils().getScreenWidth(this)
-//            binding.viewModel!!.updateBooksAdapterColumnWidth(screenWidth)
-        }
-
         var screenWidth: Int = ScreenSizeUtils().getScreenWidth(this)
-        binding.viewModel!!.updateBooksAdapterColumnWidth(screenWidth, isLandScape)
+        binding.viewModel!!.updateBooksAdapterColumnWidth(screenWidth)
     }
 
 
     override fun setListener() {
+        binding.viewModel!!.isShowError.removeObservers(this)
+        binding.viewModel!!.isShowError.observe(this, Observer {
+            if (it && lifecycle.currentState == Lifecycle.State.RESUMED) {
+                binding.layoutError.ivError.setImageResource(
+                    if (isInternetAvailable(this))
+                        R.drawable.error_ice_creame_icon else R.drawable.error_router_connection_icon
+                )
+                binding.layoutError.tvErrorTitleConnection.text =
+                    if (isInternetAvailable(this))
+                        getString(R.string.oh_no) else getString(R.string.you_are_offline)
+                binding.layoutError.tvErrorBodyConnection.text = if (isInternetAvailable(this))
+                    binding.viewModel!!.connectionErrorMessage else getString(R.string.no_internet_connection)
+            }
+        })
+
+        binding.layoutError.tvRetry.setOnClickListener {
+            binding.viewModel!!.getHomeDataApi()
+        }
+
+        binding.recyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val pastVisibleItems =
+                    (recyclerView.layoutManager as GridLayoutManager).findFirstCompletelyVisibleItemPosition()
+                //first item
+                binding.swipeRefreshHomeFragment.isEnabled = pastVisibleItems == 0
+
+                val visibleItemCount = recyclerView.layoutManager!!.childCount
+                val totalItemCount = recyclerView.layoutManager!!.itemCount
+
+                if (pastVisibleItems + visibleItemCount >= totalItemCount &&
+                    !binding.viewModel?.isShowRefresh?.value!! &&
+                    !binding.viewModel?.isShowLoader?.value!!
+                    && binding.viewModel?.characterModels?.size!! < binding.viewModel?.total!!
+                ) {
+                    //End of list
+                    binding.viewModel!!.getNextItemsDataApi()
+                }
+            }
+        })
     }
 
     private var doubleBackToExitPressedOnce: Boolean = false

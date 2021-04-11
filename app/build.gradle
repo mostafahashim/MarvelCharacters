@@ -166,6 +166,7 @@ dependencies {
 //    implementation 'com.github.marcandreappel:blurimage:1.0.0'
 
     implementation 'com.github.jgabrielfreitas:BlurImageView:1.0.1'
+    implementation 'com.github.mmin18:realtimeblurview:1.2.1'
 
     implementation project(':imageviewer')
 

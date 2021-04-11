@@ -11,50 +11,65 @@
             type="com.marvel.characters.view.activity.main.MainViewModel" />
     </data>
 
-    <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshHomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
-        android:orientation="vertical">
+        android:background="@color/black_light"
+        app:onRefreshListener="@{() -> viewModel.getHomeDataApi()}"
+        app:refreshing="@{viewModel.isShowRefresh}">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/layoutLoader"
-                layout="@layout/layout_loader_shimmer"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:visibility="@{viewModel.isShowLoader()?View.VISIBLE : View.GONE}" />
+                android:background="@color/black_light"
+                android:orientation="vertical">
 
-            <include
-                android:id="@+id/layoutNoData"
-                layout="@layout/layout_error_no_data"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:visibility="@{viewModel.isShowNoData()?View.VISIBLE : View.GONE}" />
+                <include
+                    android:id="@+id/layoutLoader"
+                    layout="@layout/layout_loader_shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:visibility="@{viewModel.isShowLoader()?View.VISIBLE : View.GONE}" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/padding_15"
-                android:layout_marginTop="@dimen/padding_5"
-                android:layout_marginEnd="@dimen/padding_15"
-                android:layout_marginBottom="@dimen/padding_5"
-                android:background="@color/black"
-                android:orientation="vertical"
-                android:visibility="@{!viewModel.isShowLoader() &amp;&amp; !viewModel.isShowNoData() ?View.VISIBLE : View.GONE}"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:spanCount="2" />
+                <include
+                    android:id="@+id/layoutError"
+                    layout="@layout/layout_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:visibility="@{viewModel.isShowError()?View.VISIBLE : View.GONE}" />
+
+                <include
+                    android:id="@+id/layoutNoData"
+                    layout="@layout/layout_error_no_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:visibility="@{viewModel.isShowNoData()?View.VISIBLE : View.GONE}" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/padding_5"
+                    android:layout_marginBottom="@dimen/padding_5"
+                    android:background="@color/black_light"
+                    android:orientation="vertical"
+                    android:visibility="@{!viewModel.isShowLoader() &amp;&amp; !viewModel.isShowError() &amp;&amp; !viewModel.isShowNoData() ?View.VISIBLE : View.GONE}"
+                    app:adapter="@{viewModel.recyclerCharacterHomeAdapter}"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    app:spanCount="1" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
-
-    </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

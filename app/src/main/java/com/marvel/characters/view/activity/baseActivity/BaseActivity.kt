@@ -12,8 +12,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.Animation
-import android.view.animation.ScaleAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,7 +30,7 @@ import com.marvel.characters.databinding.ActivityBaseBinding
 import com.marvel.characters.observer.OnAskUserAction
 import com.marvel.characters.util.*
 import com.marvel.characters.view.activity.splash.SplashActivity
-import com.marvel.characters.view.activity.main.MainActivity
+import com.marvel.characters.view.sub.PopupDialogSearch
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -43,7 +41,8 @@ abstract class BaseActivity(
     var drawHeader: Boolean,
     var showBack: Boolean,
     var showMenu: Boolean,
-    var showNotification: Boolean,
+    var showLogo: Boolean,
+    var showSearch: Boolean,
     var appBarWhite: Boolean
 ) : AppCompatActivity() {
 
@@ -87,8 +86,9 @@ abstract class BaseActivity(
             showSideTitle,
             showCenterTitle,
             showBack,
+            showLogo,
             showMenu,
-            showNotification,
+            showSearch,
             appBarWhite
         )
         doOnCreate(savedInstanceState)
@@ -117,6 +117,9 @@ abstract class BaseActivity(
         }
 
         override fun onSearchClicked() {
+            // search
+            val popupDialogSearch = PopupDialogSearch()
+            popupDialogSearch.show(supportFragmentManager, "PopupDialogSearch")
         }
 
         override fun onLoginAgain() {
@@ -212,6 +215,11 @@ abstract class BaseActivity(
         setDrawerState(isVisible)
     }
 
+    fun setLogoVisibility(isVisible: Boolean) {
+        baseBinding.ivLogoCustomActionBar.visibility =
+            if (isVisible) View.VISIBLE else View.INVISIBLE
+    }
+
     fun setAnyIcon1Visibility(isVisible: Boolean) {
         baseBinding.layoutAnyIcon1CustomActionbar.visibility =
             if (isVisible) View.VISIBLE else View.INVISIBLE
@@ -267,6 +275,7 @@ abstract class BaseActivity(
         showSideTitle: Boolean,
         showCenterTitle: Boolean,
         showBack: Boolean,
+        showLogo: Boolean,
         showMenu: Boolean,
         showNotification: Boolean,
         appBarWhite: Boolean
@@ -276,6 +285,7 @@ abstract class BaseActivity(
         setBackIconVisibility(showBack, appBarWhite)
         setMenuIconVisibility(showMenu)
         setAnyIcon1Visibility(showNotification)
+        setLogoVisibility(showLogo)
         setAnyIcon1NotifyVisibility(false)
         setHeaderTitle(title)
 
@@ -295,7 +305,7 @@ abstract class BaseActivity(
             )
         } else {
             setAppBarGradient()
-            baseBinding.layoutContainerActionBar.setBackgroundResource(R.color.colorPrimary)
+            baseBinding.layoutContainerActionBar.setBackgroundResource(R.drawable.big_round_corner_bottom_bg_color_primary_dark)
             baseBinding.tvSideTitleCustomActionBar.setTextColor(
                 ContextCompat.getColor(
                     this,
@@ -387,7 +397,7 @@ abstract class BaseActivity(
             window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
         }
         //set gradient color
-        baseBinding.layoutContainerActionBar.setBackgroundResource(R.drawable.gradient_end_red_black_bg)
+        baseBinding.layoutContainerActionBar.setBackgroundResource(R.drawable.big_round_corner_bottom_bg_color_primary_dark)
         window.setBackgroundDrawable(
             ContextCompat.getDrawable(
                 this,

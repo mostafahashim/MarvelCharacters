@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
   #
-  <color name="colorPrimary">#000000</color>
-  <color name="colorPrimaryDark">#000000</color>
+  <color name="colorPrimary">#272626</color>
+  <color name="colorPrimaryDark">#1B1B1B</color>
   <color name="colorAccent">#FE0004</color>
   <color name="transparent_20_orange">#33f26627</color>
   <color name="taupe">#3a3a3a</color>
+  <color name="red_light">#FF898E</color>
   <color name="davygrey">#555555</color>
   <color name="red_black">#730417</color>
   <color name="transparent_red_black">#aa730417</color>
-  <color name="transparent_colorPrimaryDark">#aa325D79</color>
-  <color name="transparent_more_colorPrimary">#12325D79</color>
-  <color name="transparent_colorPrimary">#99325D79</color>
-  <color name="transparent10_colorPrimaryDark">#16325D79</color>
-  <color name="transparent23_colorPrimaryDark">#3B325D79</color>
-  <color name="transparent30_colorPrimaryDark">#48325D79</color>
-  <color name="transparent_colorAccent">#99f26627</color>
+  <color name="transparent_colorPrimaryDark">#aa1B1B1B</color>
+  <color name="transparent_more_colorPrimary">#121B1B1B</color>
+  <color name="transparent_colorPrimary">#991B1B1B</color>
+  <color name="transparent10_colorPrimaryDark">#161B1B1B</color>
+  <color name="transparent23_colorPrimaryDark">#3B1B1B1B</color>
+  <color name="transparent30_colorPrimaryDark">#481B1B1B</color>
+  <color name="transparent_colorAccent">#99FE0004</color>
   <color name="black">#000000</color>
   <color name="transparent_10_black">#1A000000</color>
+  <color name="transparent_23_black">#3B000000</color>
+  <color name="transparent_30_black">#48000000</color>
+  <color name="transparent_40_black">#66000000</color>
+  <color name="transparent_50_black">#80000000</color>
   <color name="gray_black">#FF444444</color>
+  <color name="black_light">#151515</color>
+
   <color name="green_dark">#009312</color>
   <color name="transparent10_gray_black">#1A444444</color>
   <color name="transparent20_gray_black">#33444444</color>

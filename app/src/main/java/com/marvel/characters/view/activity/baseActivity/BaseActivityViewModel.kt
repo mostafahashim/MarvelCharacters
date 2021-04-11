@@ -39,6 +39,10 @@ open class BaseActivityViewModel(
         baseViewModelObserver.onAny2ButtonClicked()
     }
 
+    fun onSearchClicked() {
+        baseViewModelObserver.onSearchClicked()
+    }
+
 
 
     fun clearAppPreferencesAndDB() {

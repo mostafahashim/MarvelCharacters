@@ -17,4 +17,7 @@ data class CharacterModel(
     var stories: StoryModel? = StoryModel(),
     var events: StoryModel? = StoryModel(),
     var urls: ArrayList<URLModel>? = ArrayList(),
+    var holderType: String? = "",
+    var columnWidth: Double = 0.0,
+    var columnHeight: Double = 0.0
 ) : Serializable

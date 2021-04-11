@@ -52,5 +52,7 @@
     <string name="log_out">تسجيل الخروج</string>
     <string name="empty">Empty</string>
     <string name="no_data_found">No Data found</string>
+    <string name="dot">.</string>
+    <string name="search_for_a_character">Search for a character</string>
 
 </resources>

@@ -11,4 +11,5 @@
         <attr name="cursorWidth" format="dimension" />
         <attr name="cursorColor" format="color|reference" />
     </declare-styleable>
+
 </resources>
