@@ -48,6 +48,7 @@ class MainViewModel(
         recyclerCharacterHomeAdapter = RecyclerCharacterHomeAdapter(0.0,
             characterModels!!, object : OnRecyclerItemClickListener {
                 override fun onRecyclerItemClickListener(position: Int) {
+                    observer.openCharacterDetails(characterModels!![position])
                 }
 
             })
@@ -185,6 +186,7 @@ class MainViewModel(
     }
 
     interface Observer {
+        fun openCharacterDetails(characterModel: CharacterModel)
     }
 
 }

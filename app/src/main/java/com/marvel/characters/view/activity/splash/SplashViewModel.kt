@@ -2,6 +2,8 @@ package com.marvel.characters.view.activity.splash
 
 import androidx.lifecycle.MutableLiveData
 import com.marvel.characters.MyApplication
+import com.marvel.characters.R
+import com.marvel.characters.util.DataProvider
 import com.marvel.characters.view.activity.baseActivity.BaseActivityViewModel
 import com.marvel.characters.util.Preferences
 import io.reactivex.*
@@ -14,17 +16,23 @@ class SplashViewModel(
 ) : BaseActivityViewModel(application) {
 
     var compositeDisposable = CompositeDisposable()
-    private var delay = 2000L
+    private var delay = 4000L
     var timerFinished = MutableLiveData<Boolean>()
     var connectionFinished = MutableLiveData<Boolean>()
     var progress = MutableLiveData<Int>()
     var isShowLoader = MutableLiveData<Boolean>()
+    val backgroundURI = MutableLiveData<String>()
 
     init {
         timerFinished.value = false
         isShowLoader.value = true
         connectionFinished.value = true
         progress.value = 0
+        backgroundURI.value = DataProvider().getUriToDrawable(
+            application.applicationContext,
+            R.drawable.mcu_background
+        )
+            .toString()
         startTimer()
     }
 

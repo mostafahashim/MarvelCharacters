@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
 import com.marvel.characters.util.Preferences
+import jp.wasabeef.glide.transformations.BlurTransformation
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 
@@ -51,7 +52,8 @@ class CustomViewBindings {
                     Glide.with(imageView).load(imageUrl)
                         .apply(
                             RequestOptions().placeholder(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent)
-                                .error(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent).diskCacheStrategy(
+                                .error(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent)
+                                .diskCacheStrategy(
                                     DiskCacheStrategy.ALL
                                 )
                         )
@@ -62,6 +64,7 @@ class CustomViewBindings {
                 imageView.setImageBitmap(null)
             }
         }
+
 
         @BindingAdapter("imageUrlRect")
         @JvmStatic
@@ -77,6 +80,61 @@ class CustomViewBindings {
                         .apply(
                             RequestOptions().placeholder(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent)
                                 .error(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent)
+                                .diskCacheStrategy(
+                                    DiskCacheStrategy.ALL
+                                )
+                        )
+                        .into(imageView)
+                }
+            } else {
+                imageView.setTag(R.id.image_url, null)
+                imageView.setImageBitmap(null)
+            }
+        }
+
+        @BindingAdapter("imageUrlBlurRect")
+        @JvmStatic
+        fun loadImageUrlBlurRect(imageView: ImageView, imageUrl: String?) {
+            if (imageUrl != null) {
+                // If we don't do this, you'll see the old image appear briefly
+                // before it's replaced with the current image
+                if (imageView.getTag(R.id.image_url) == null || imageView.getTag(R.id.image_url) != imageUrl) {
+                    imageView.setImageBitmap(null)
+                    imageView.setTag(R.id.image_url, imageUrl)
+
+                    Glide.with(imageView).load(imageUrl)
+                        .apply(
+                            RequestOptions
+                                .bitmapTransform(BlurTransformation(25, 5))
+//                                .placeholder(R.drawable.mcu_background)
+//                                .error(R.drawable.mcu_background)
+//                                .diskCacheStrategy(
+//                                    DiskCacheStrategy.ALL
+//                                )
+                        )
+                        .into(imageView)
+                }
+            } else {
+                imageView.setTag(R.id.image_url, null)
+                imageView.setImageBitmap(null)
+            }
+        }
+
+        @BindingAdapter("imageUrlBlurRectResource")
+        @JvmStatic
+        fun loadImageUrlBlurRectResource(imageView: ImageView, imageUrl: Drawable?) {
+            if (imageUrl != null) {
+                // If we don't do this, you'll see the old image appear briefly
+                // before it's replaced with the current image
+                if (imageView.getTag(R.id.image_url) == null || imageView.getTag(R.id.image_url) != imageUrl) {
+                    imageView.setImageBitmap(null)
+                    imageView.setTag(R.id.image_url, imageUrl)
+
+                    Glide.with(imageView).load(imageUrl)
+                        .apply(
+                            RequestOptions.bitmapTransform(BlurTransformation(25,4))
+                                .placeholder(R.drawable.mcu_background)
+                                .error(R.drawable.mcu_background)
                                 .diskCacheStrategy(
                                     DiskCacheStrategy.ALL
                                 )
@@ -141,14 +199,14 @@ class CustomViewBindings {
                             cornerType
                         )
                     )
-                    val requestOptions = RequestOptions.bitmapTransform(transformation)
+                    val requestOptions = RequestOptions.bitmapTransform(transformation).error(R.drawable.image_placeholder)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                     val thumbnail: RequestBuilder<Drawable> = Glide.with(imageView)
-                        .load(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent)
-                        .apply(requestOptions)
-
+                        .load(R.drawable.image_placeholder)
+                        .error(R.drawable.image_placeholder)
+                        .apply(requestOptions).error(R.drawable.image_placeholder)
                     Glide.with(imageView).load(imageUrlRoundTopRect)
-                        .apply(requestOptions).thumbnail(thumbnail)
+                        .apply(requestOptions).thumbnail(thumbnail).error(R.drawable.image_placeholder)
                         .into(imageView)
                 }
             } else {
@@ -191,6 +249,32 @@ class CustomViewBindings {
             }
         }
 
+        @BindingAdapter("imageUrlRectResource")
+        @JvmStatic
+        fun loadImageUrlRectResource(imageView: ImageView, imageUrl: Drawable?) {
+            if (imageUrl != null) {
+                // If we don't do this, you'll see the old image appear briefly
+                // before it's replaced with the current image
+                if (imageView.getTag(R.id.image_url) == null || imageView.getTag(R.id.image_url) != imageUrl) {
+                    imageView.setImageBitmap(null)
+                    imageView.setTag(R.id.image_url, imageUrl)
+
+                    Glide.with(imageView).load(imageUrl)
+                        .apply(
+                            RequestOptions().placeholder(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent)
+                                .error(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent)
+                                .diskCacheStrategy(
+                                    DiskCacheStrategy.ALL
+                                )
+                        )
+                        .into(imageView)
+                }
+            } else {
+                imageView.setTag(R.id.image_url, null)
+                imageView.setImageBitmap(null)
+            }
+        }
+
         @BindingAdapter("imageUrlRoundStartRect")
         @JvmStatic
         fun loadImageUrlRoundStartRect(imageView: ImageView, imageUrlRoundTopRect: String?) {
@@ -209,6 +293,75 @@ class CustomViewBindings {
                         CenterCrop(),
                         RoundedCornersTransformation(
                             20, 0,
+                            cornerType
+                        )
+                    )
+                    val requestOptions = RequestOptions.bitmapTransform(transformation)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    val thumbnail: RequestBuilder<Drawable> = Glide.with(imageView)
+                        .load(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent)
+                        .apply(requestOptions)
+                    Glide.with(imageView).load(imageUrlRoundTopRect)
+                        .apply(requestOptions).thumbnail(thumbnail)
+                        .into(imageView)
+                }
+            } else {
+                imageView.setTag(R.id.image_url, null)
+                imageView.setImageBitmap(null)
+            }
+        }
+
+        @BindingAdapter("imageUrlBigRoundStartRect")
+        @JvmStatic
+        fun loadImageUrlBigRoundStartRect(imageView: ImageView, imageUrlRoundTopRect: String?) {
+            if (imageUrlRoundTopRect != null) {
+                // If we don't do this, you'll see the old image appear briefly
+                // before it's replaced with the current image
+                if (imageView.getTag(R.id.image_url) == null || imageView.getTag(R.id.image_url) != imageUrlRoundTopRect) {
+                    imageView.setImageBitmap(null)
+                    imageView.setTag(R.id.image_url, imageUrlRoundTopRect)
+
+                    var cornerType = RoundedCornersTransformation.CornerType.LEFT
+                    if (Preferences.getApplicationLocale().compareTo("ar") == 0) {
+                        cornerType = RoundedCornersTransformation.CornerType.RIGHT
+                    }
+                    val transformation = MultiTransformation(
+                        CenterCrop(),
+                        RoundedCornersTransformation(
+                            50, 0,
+                            cornerType
+                        )
+                    )
+                    val requestOptions = RequestOptions.bitmapTransform(transformation)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    val thumbnail: RequestBuilder<Drawable> = Glide.with(imageView)
+                        .load(R.drawable.layout_bg_transparent_gray_selector_with_bg_transparent)
+                        .apply(requestOptions)
+                    Glide.with(imageView).load(imageUrlRoundTopRect)
+                        .apply(requestOptions).thumbnail(thumbnail)
+                        .into(imageView)
+                }
+            } else {
+                imageView.setTag(R.id.image_url, null)
+                imageView.setImageBitmap(null)
+            }
+        }
+
+        @BindingAdapter("imageUrlBigRoundBottomRect")
+        @JvmStatic
+        fun loadImageUrlBigRoundBottomRect(imageView: ImageView, imageUrlRoundTopRect: String?) {
+            if (imageUrlRoundTopRect != null) {
+                // If we don't do this, you'll see the old image appear briefly
+                // before it's replaced with the current image
+                if (imageView.getTag(R.id.image_url) == null || imageView.getTag(R.id.image_url) != imageUrlRoundTopRect) {
+                    imageView.setImageBitmap(null)
+                    imageView.setTag(R.id.image_url, imageUrlRoundTopRect)
+
+                    var cornerType = RoundedCornersTransformation.CornerType.BOTTOM
+                    val transformation = MultiTransformation(
+                        CenterCrop(),
+                        RoundedCornersTransformation(
+                            50, 0,
                             cornerType
                         )
                     )

@@ -16,6 +16,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.SystemClock
 import android.provider.MediaStore
+import androidx.annotation.AnyRes
 import com.marvel.characters.R
 import com.marvel.characters.model.CharacterModel
 import java.io.*
@@ -531,4 +532,15 @@ class DataProvider {
 		return strMyImagePath ?: path
 	}
 
+	fun getUriToDrawable(
+		context: Context,
+		@AnyRes drawableId: Int
+	): Uri? {
+		return Uri.parse(
+			ContentResolver.SCHEME_ANDROID_RESOURCE +
+					"://" + context.resources.getResourcePackageName(drawableId)
+					+ '/' + context.resources.getResourceTypeName(drawableId)
+					+ '/' + context.resources.getResourceEntryName(drawableId)
+		)
+	}
 }

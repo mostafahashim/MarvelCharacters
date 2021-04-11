@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.text.Html" />
+
         <import type="android.view.View" />
 
         <variable
@@ -14,14 +16,15 @@
     <LinearLayout
         android:id="@+id/layoutItemRecyclerService"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/padding_120"
+        android:layout_height="@dimen/padding_90"
+        android:layout_margin="@dimen/padding_10"
         android:background="@drawable/big_round_corner_color_primary_selector"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/ivItemRecyclerService"
-            imageUrlRoundStartRect="@{model.thumbnail.path.concat(@string/dot).concat(model.thumbnail.extension)}"
-            android:layout_width="@dimen/padding_120"
+            imageUrlBigRoundStartRect="@{model.thumbnail.path.concat(@string/dot).concat(model.thumbnail.extension)}"
+            android:layout_width="@dimen/padding_100"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
@@ -32,15 +35,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="@dimen/padding_15"
+            android:layout_margin="@dimen/padding_10"
             android:fontFamily="@font/avenir_heavy"
-            android:gravity="center"
             android:includeFontPadding="false"
             android:maxLines="1"
-            android:padding="@dimen/padding_5"
-            android:text="@{model.name}"
+            app:htmlText="@{model.name}"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_18" />
+            android:textSize="@dimen/font_size_16" />
 
     </LinearLayout>
 </layout>

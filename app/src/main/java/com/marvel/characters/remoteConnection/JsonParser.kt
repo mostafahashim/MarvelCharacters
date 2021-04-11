@@ -32,6 +32,19 @@ class JsonParser {
         }
     }
 
+    fun getCharacterComicsResponseModel(response: String?): CharacterComicsResponseModel? {
+        return try {
+            val gson = Gson()
+            val type = object : TypeToken<CharacterComicsResponseModel>() {
+
+            }.type
+            gson.fromJson(response, type)
+        } catch (e1: Exception) {
+            e1.printStackTrace()
+            null
+        }
+    }
+
 }
 
 

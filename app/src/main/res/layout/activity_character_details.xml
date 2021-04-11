@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.marvel.characters.view.activity.characterDetails.CharacterDetailsViewModel" />
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshHomeFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_light"
+        app:onRefreshListener="@{() -> viewModel.getHomeDataApi()}"
+        app:refreshing="@{viewModel.isShowRefresh}">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_light"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/layoutLoader"
+                layout="@layout/layout_loader_shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:visibility="@{viewModel.isShowLoader()?View.VISIBLE : View.GONE}" />
+
+            <include
+                android:id="@+id/layoutError"
+                layout="@layout/layout_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:visibility="@{viewModel.isShowError()?View.VISIBLE : View.GONE}" />
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black_light"
+                android:fitsSystemWindows="true"
+                android:visibility="@{!viewModel.isShowLoader() &amp;&amp; !viewModel.isShowError()  ?View.VISIBLE : View.GONE}">
+
+                <ImageView
+                    android:id="@+id/ivBackground"
+                    imageUrlBlurRect="@{viewModel.image}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:background="@color/transparent_more_black" />
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_300"
+                    android:fitsSystemWindows="true"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                        android:id="@+id/collapsing_toolbar_BookDetailsActivity"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fitsSystemWindows="true"
+                        app:collapsedTitleGravity="center_horizontal"
+                        app:collapsedTitleTextAppearance="@style/TextAppearance.Title.Collapsed"
+                        app:contentScrim="@color/colorPrimaryDark"
+                        app:expandedTitleMarginEnd="0dp"
+                        app:expandedTitleMarginStart="0dp"
+                        app:expandedTitleTextAppearance="@style/TextAppearance.Title.Expanded"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                        <ImageView
+                            android:id="@+id/imgview_image_BookDetailsActivity"
+                            imageUrlBigRoundBottomRect="@{viewModel.image}"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fitsSystemWindows="true"
+                            android:scaleType="centerCrop"
+                            android:onClick="@{()->viewModel.observer.openImageViewer()}"
+                            android:src="@drawable/image_placeholder"
+                            app:layout_collapseMode="parallax" />
+
+                        <androidx.appcompat.widget.Toolbar
+                            android:id="@+id/toolbar_BookDetailsActivity"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/padding_60"
+                            app:contentInsetEnd="@dimen/padding_0"
+                            app:contentInsetStart="@dimen/padding_0"
+                            app:layout_collapseMode="pin"
+                            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                            <ImageView
+                                android:layout_width="@dimen/padding_70"
+                                android:layout_height="@dimen/padding_40"
+                                android:layout_marginTop="@dimen/padding_10"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/big_round_corner_from_right_transparent_color_primary_dark_selector"
+                                android:onClick="@{()->viewModel.onButtonBackClicked()}"
+                                android:padding="@dimen/padding_10"
+                                android:src="@drawable/back_white_icon" />
+
+                        </androidx.appcompat.widget.Toolbar>
+
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/scrlviewFragmentHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="70dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/padding_10"
+                            android:layout_marginTop="@dimen/padding_10"
+                            android:layout_marginEnd="@dimen/padding_10"
+                            android:fontFamily="@font/avenir_heavy"
+                            android:includeFontPadding="false"
+                            android:text="@{viewModel.name}"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/font_size_25" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/padding_10"
+                            android:layout_marginTop="@dimen/padding_10"
+                            android:layout_marginEnd="@dimen/padding_10"
+                            android:fontFamily="@font/avenir_heavy"
+                            android:includeFontPadding="false"
+                            android:text="@string/description"
+                            android:textColor="@color/red_light"
+                            android:textSize="@dimen/font_size_16" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/padding_10"
+                            android:layout_marginTop="@dimen/padding_10"
+                            android:layout_marginEnd="@dimen/padding_10"
+                            android:fontFamily="@font/avenir_roman"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/font_size_16"
+                            app:htmlText="@{viewModel.description}" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/padding_20"
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.isShowComics()?View.VISIBLE : View.GONE}">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/padding_10"
+                                android:layout_marginEnd="@dimen/padding_10"
+                                android:fontFamily="@font/avenir_heavy"
+                                android:includeFontPadding="false"
+                                android:text="@string/comics"
+                                android:textColor="@color/red_light"
+                                android:textSize="@dimen/font_size_16" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/padding_5"
+                                android:orientation="horizontal"
+                                app:adapter="@{viewModel.recyclerComicsItemEventAdapter}"
+                                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:spanCount="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/padding_10"
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.isShowEvents()?View.VISIBLE : View.GONE}">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/padding_10"
+                                android:layout_marginEnd="@dimen/padding_10"
+                                android:fontFamily="@font/avenir_heavy"
+                                android:includeFontPadding="false"
+                                android:text="@string/events"
+                                android:textColor="@color/red_light"
+                                android:textSize="@dimen/font_size_16" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/padding_5"
+                                android:orientation="horizontal"
+                                app:adapter="@{viewModel.recyclerEventsItemEventAdapter}"
+                                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:spanCount="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/padding_10"
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.isShowSeries()?View.VISIBLE : View.GONE}">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/padding_10"
+                                android:layout_marginEnd="@dimen/padding_10"
+                                android:fontFamily="@font/avenir_heavy"
+                                android:includeFontPadding="false"
+                                android:text="@string/series"
+                                android:textColor="@color/red_light"
+                                android:textSize="@dimen/font_size_16" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/padding_5"
+                                android:orientation="horizontal"
+                                app:adapter="@{viewModel.recyclerSeriesItemEventAdapter}"
+                                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:spanCount="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/padding_10"
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.isShowStories()?View.VISIBLE : View.GONE}">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/padding_10"
+                                android:layout_marginEnd="@dimen/padding_10"
+                                android:fontFamily="@font/avenir_heavy"
+                                android:includeFontPadding="false"
+                                android:text="@string/stories"
+                                android:textColor="@color/red_light"
+                                android:textSize="@dimen/font_size_16" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/padding_5"
+                                android:orientation="horizontal"
+                                app:adapter="@{viewModel.recyclerStoriesItemEventAdapter}"
+                                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:spanCount="1" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

@@ -19,13 +19,12 @@
         android:orientation="vertical"
         android:visibility="@{viewModel.isShowLoader()?View.VISIBLE : View.GONE}">
 
-        <com.jgabrielfreitas.core.BlurImageView
+        <ImageView
             android:id="@+id/ivSplashBG"
+            imageUrlBlurRect="@{viewModel.backgroundURI}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/mcu_background"
-            app:radius="4" />
+            android:scaleType="centerCrop" />
 
         <ImageView
             android:layout_width="match_parent"

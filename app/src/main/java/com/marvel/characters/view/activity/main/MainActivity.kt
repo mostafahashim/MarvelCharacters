@@ -23,12 +23,15 @@ import com.bumptech.glide.Glide
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.marvel.characters.R
 import com.marvel.characters.databinding.ActivityMainBinding
+import com.marvel.characters.model.CharacterModel
 import com.marvel.characters.posterUtil.PosterOverlayView
 import com.marvel.characters.remoteConnection.setup.isInternetAvailable
 import com.marvel.characters.util.DataProvider
+import com.marvel.characters.util.Preferences
 import com.marvel.characters.util.RequestCodeCaptureActivity
 import com.marvel.characters.util.ScreenSizeUtils
 import com.marvel.characters.view.activity.baseActivity.BaseActivity
+import com.marvel.characters.view.activity.characterDetails.CharacterDetailsActivity
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -37,7 +40,7 @@ import java.io.File
 
 class MainActivity : BaseActivity(
     R.string.app_name, false, false, true,
-    false, false, true,true, false,
+    false, false, true, true, false,
 ), MainViewModel.Observer {
 
     lateinit var binding: ActivityMainBinding
@@ -129,6 +132,17 @@ class MainActivity : BaseActivity(
             Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
         } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun openCharacterDetails(characterModel: CharacterModel) {
+        Intent(this@MainActivity, CharacterDetailsActivity::class.java).also {
+            it.putExtra(
+                "CharacterModel",
+                characterModel
+            )
+            startActivity(it)
+            overridePendingTransition(R.anim.slide_from_right_to_left, R.anim.slide_in_left)
         }
     }
 

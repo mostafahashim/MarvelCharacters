@@ -55,6 +55,11 @@
     <string name="no_data_found">No Data found</string>
     <string name="dot">.</string>
     <string name="search_for_a_character">Search for a character</string>
+    <string name="description">Description</string>
+    <string name="comics">Comics</string>
+    <string name="events">Events</string>
+    <string name="stories">Stories</string>
+    <string name="series">Series</string>
 
 </resources>
 

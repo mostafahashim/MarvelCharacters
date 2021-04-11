@@ -2,16 +2,21 @@ package com.marvel.characters.view.sub
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marvel.characters.R
+import com.marvel.characters.adapter.RecyclerCharacterHomeAdapter
 import com.marvel.characters.adapter.RecyclerCharacterSearchAdapter
 import com.marvel.characters.databinding.PopupDialogSearchBinding
 import com.marvel.characters.model.CharacterModel
@@ -19,10 +24,14 @@ import com.marvel.characters.observer.OnRecyclerItemClickListener
 import com.marvel.characters.remoteConnection.JsonParser
 import com.marvel.characters.remoteConnection.URL
 import com.marvel.characters.remoteConnection.remoteService.RemoteCallback
+import com.marvel.characters.remoteConnection.remoteService.startGetMethodUsingCoroutines
 import com.marvel.characters.remoteConnection.remoteService.startGetMethodUsingRX
 import com.marvel.characters.remoteConnection.setup.getDefaultParams
 import com.marvel.characters.view.activity.baseActivity.BaseActivity
+import com.marvel.characters.view.activity.characterDetails.CharacterDetailsActivity
+import com.marvel.characters.view.activity.main.MainActivity
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.launch
 
 
 class PopupDialogSearch : BaseDialogFragment() {
@@ -95,16 +104,10 @@ class PopupDialogSearch : BaseDialogFragment() {
     var characterModels: ArrayList<CharacterModel>? = ArrayList()
     private fun initializeViews() {
         binding.progressBarPopupdialogSearch.visibility = View.GONE
-    }
-
-    private fun setList() {
-        binding.listViewPopupdialogSearch.layoutManager =
-            GridLayoutManager(activity, 1, RecyclerView.VERTICAL, false)
-        binding.listViewPopupdialogSearch.adapter = RecyclerCharacterSearchAdapter(
-            characterModels!!, object : OnRecyclerItemClickListener {
-                override fun onRecyclerItemClickListener(position: Int) {
-                }
-            })
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.edttxtSearchPopupdialogSearch.requestFocus()
+            activity?.showKeyPad(binding.edttxtSearchPopupdialogSearch)
+        }, 50)
     }
 
     private fun setListener() {
@@ -148,24 +151,49 @@ class PopupDialogSearch : BaseDialogFragment() {
                     binding.progressBarPopupdialogSearch.visibility = View.GONE
                 } else {
                     binding.ivSearchPopupdialogSearch.isEnabled = true
-                    if (text.length >= 3) {
-                        //send search words to server
-                        getSearchDataApi(binding.edttxtSearchPopupdialogSearch.text.toString())
-                    }
+                    //send search words to server
+                    getSearchDataApi(binding.edttxtSearchPopupdialogSearch.text.toString())
                 }
             }
         })
+
+    }
+
+    var total = 0
+    lateinit var recyclerCharacterSearchAdapter: RecyclerCharacterSearchAdapter
+    private fun setList(keyWord: String) {
+        binding.recyclerView.visibility = View.VISIBLE
+        binding.recyclerView.layoutManager =
+            GridLayoutManager(activity, 1, RecyclerView.VERTICAL, false)
+        recyclerCharacterSearchAdapter = RecyclerCharacterSearchAdapter(keyWord,
+            characterModels!!, object : OnRecyclerItemClickListener {
+                override fun onRecyclerItemClickListener(position: Int) {
+                    Intent(requireActivity(), CharacterDetailsActivity::class.java).also {
+                        it.putExtra(
+                            "CharacterModel",
+                            characterModels!![position]
+                        )
+                        startActivity(it)
+                        activity?.overridePendingTransition(
+                            R.anim.slide_from_right_to_left,
+                            R.anim.slide_in_left
+                        )
+                    }
+                }
+            })
+        binding.recyclerView.adapter = recyclerCharacterSearchAdapter
     }
 
     var compositeDisposable = CompositeDisposable()
+    var isLoading = false
 
     fun getSearchDataApi(keyWord: String) {
         var params = getDefaultParams(activity?.application!!, HashMap())
-        params["limit"] = 10
+        params["limit"] = 20
         //items to skip
         params["offset"] = 0
         params["nameStartsWith"] = keyWord
-        
+
         compositeDisposable.add(
             startGetMethodUsingRX(
                 URL.getCharactersUrl(),
@@ -173,21 +201,26 @@ class PopupDialogSearch : BaseDialogFragment() {
                 object : RemoteCallback {
                     override fun onStartConnection() {
                         binding.progressBarPopupdialogSearch.visibility = View.VISIBLE
+                        binding.recyclerView.visibility = View.GONE
+                        isLoading = true
                     }
 
                     override fun onFailureConnection(errorMessage: Any?) {
                         binding.progressBarPopupdialogSearch.visibility = View.GONE
+                        isLoading = false
                     }
 
                     override fun onSuccessConnection(response: Any?) {
                         binding.progressBarPopupdialogSearch.visibility = View.GONE
+                        isLoading = false
                         try {
                             var responseModel =
                                 JsonParser().getCharactersListResponseModel(response.toString())
                             if (responseModel != null) {
                                 characterModels = responseModel.data.results
+                                total = responseModel.data.total
                                 if (!characterModels.isNullOrEmpty()) {
-                                    setList()
+                                    setList(keyWord)
                                 }
                             } else {
                             }

@@ -61,11 +61,12 @@
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:padding="@dimen/padding_10"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
+                    android:padding="@dimen/padding_15"
                     android:textColor="@color/white"
                     android:textColorHint="@color/silver"
-                    android:textSize="@dimen/font_size_16"
-                    android:textStyle="normal" />
+                    android:textSize="@dimen/font_size_16"/>
 
             </RelativeLayout>
         </RelativeLayout>
@@ -76,15 +77,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/padding_5"
             android:visibility="visible"
             app:indicatorColor="@color/colorAccent"
             app:indicatorName="BallPulseIndicator" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listView_popupdialog_search"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_15"
+            android:layout_marginEnd="@dimen/padding_15"
             android:padding="10dp" />
 
     </LinearLayout>
