@@ -147,9 +147,11 @@ class PopupDialogSearch : BaseDialogFragment() {
             override fun afterTextChanged(editable: Editable) {
                 val text: String = binding.edttxtSearchPopupdialogSearch.text.toString().trim()
                 if (text.isEmpty()) {
+                    compositeDisposable.clear()
                     binding.ivSearchPopupdialogSearch.isEnabled = false
                     binding.progressBarPopupdialogSearch.visibility = View.GONE
                 } else {
+                    compositeDisposable.clear()
                     binding.ivSearchPopupdialogSearch.isEnabled = true
                     //send search words to server
                     getSearchDataApi(binding.edttxtSearchPopupdialogSearch.text.toString())
