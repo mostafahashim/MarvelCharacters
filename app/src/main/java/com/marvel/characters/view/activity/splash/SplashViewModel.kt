@@ -16,7 +16,7 @@ class SplashViewModel(
 ) : BaseActivityViewModel(application) {
 
     var compositeDisposable = CompositeDisposable()
-    private var delay = 4000L
+    private var delay = 2000L
     var timerFinished = MutableLiveData<Boolean>()
     var connectionFinished = MutableLiveData<Boolean>()
     var progress = MutableLiveData<Int>()

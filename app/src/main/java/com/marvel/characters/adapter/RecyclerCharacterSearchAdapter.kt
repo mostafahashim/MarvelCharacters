@@ -15,7 +15,6 @@ import hk.ids.gws.android.sclick.SClick
 
 
 class RecyclerCharacterSearchAdapter(
-    var keyWord: String,
     var characterModels: ArrayList<CharacterModel>,
     var onRecyclerItemClickListener: OnRecyclerItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -58,11 +57,11 @@ class RecyclerCharacterSearchAdapter(
 
         var holder = holder as ViewHolder
 
-        characterModels[holder.adapterPosition].name =
-            characterModels[holder.adapterPosition].name?.replace(
-                keyWord,
-            "<span style=\"background-color: #730417\">$keyWord</span>",true
-            )
+//        characterModels[holder.adapterPosition].name =
+//            characterModels[holder.adapterPosition].name?.replace(
+//                keyWord,
+//            "<span style=\"background-color: #730417\">$keyWord</span>",true
+//            )
 
         holder.binding.model = characterModels[holder.adapterPosition]
 

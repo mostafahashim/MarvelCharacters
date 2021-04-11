@@ -58,10 +58,10 @@ class CharacterDetailsViewModel(
         isShowLoader.value = true
         isShowError.value = false
         isShowRefresh.value = false
-        isShowComics.value = true
+        isShowComics.value = false
         isShowEvents.value = false
         isShowStories.value = false
-        isShowSeries.value = true
+        isShowSeries.value = false
         image.value = ""
         name.value = ""
         description.value = ""
@@ -92,7 +92,7 @@ class CharacterDetailsViewModel(
     }
 
     fun updateBooksAdapterColumnWidth(screenWidth: Int) {
-        var columnWidth = (110.00 * screenWidth) / 360.00
+        var columnWidth = (100.00 * screenWidth) / 360.00
         recyclerComicsItemEventAdapter.setColumnWidthAndRatio(columnWidth)
         recyclerComicsItemEventAdapter.notifyDataSetChanged()
 

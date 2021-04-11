@@ -173,6 +173,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/padding_20"
+                            android:layout_marginStart="@dimen/padding_10"
+                            android:layout_marginEnd="@dimen/padding_10"
                             android:orientation="vertical"
                             android:visibility="@{viewModel.isShowComics()?View.VISIBLE : View.GONE}">
 
@@ -180,8 +182,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginStart="@dimen/padding_10"
-                                android:layout_marginEnd="@dimen/padding_10"
                                 android:fontFamily="@font/avenir_heavy"
                                 android:includeFontPadding="false"
                                 android:text="@string/comics"
@@ -203,6 +203,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/padding_10"
+                            android:layout_marginStart="@dimen/padding_10"
+                            android:layout_marginEnd="@dimen/padding_10"
                             android:orientation="vertical"
                             android:visibility="@{viewModel.isShowEvents()?View.VISIBLE : View.GONE}">
 
@@ -210,8 +212,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginStart="@dimen/padding_10"
-                                android:layout_marginEnd="@dimen/padding_10"
                                 android:fontFamily="@font/avenir_heavy"
                                 android:includeFontPadding="false"
                                 android:text="@string/events"
@@ -233,6 +233,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/padding_10"
+                            android:layout_marginStart="@dimen/padding_10"
+                            android:layout_marginEnd="@dimen/padding_10"
                             android:orientation="vertical"
                             android:visibility="@{viewModel.isShowSeries()?View.VISIBLE : View.GONE}">
 
@@ -240,8 +242,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginStart="@dimen/padding_10"
-                                android:layout_marginEnd="@dimen/padding_10"
                                 android:fontFamily="@font/avenir_heavy"
                                 android:includeFontPadding="false"
                                 android:text="@string/series"
@@ -263,6 +263,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/padding_10"
+                            android:layout_marginStart="@dimen/padding_10"
+                            android:layout_marginEnd="@dimen/padding_10"
                             android:orientation="vertical"
                             android:visibility="@{viewModel.isShowStories()?View.VISIBLE : View.GONE}">
 
@@ -270,8 +272,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginStart="@dimen/padding_10"
-                                android:layout_marginEnd="@dimen/padding_10"
                                 android:fontFamily="@font/avenir_heavy"
                                 android:includeFontPadding="false"
                                 android:text="@string/stories"

@@ -29,7 +29,6 @@ import com.marvel.characters.view.activity.baseActivity.BaseActivity
 import com.stfalcon.imageviewer.StfalconImageViewer
 import jp.wasabeef.glide.transformations.BlurTransformation
 
-
 class CharacterDetailsActivity : BaseActivity(
     R.string.app_name, false, false, false,
     false, false, false, false, false,

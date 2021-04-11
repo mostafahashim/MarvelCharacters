@@ -2,7 +2,6 @@ package com.marvel.characters.view.activity.baseActivity
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.room.Room
 import com.marvel.characters.MyApplication
 import com.marvel.characters.R
 import com.marvel.characters.util.Preferences

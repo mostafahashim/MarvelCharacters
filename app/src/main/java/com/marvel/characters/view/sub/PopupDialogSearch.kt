@@ -157,15 +157,40 @@ class PopupDialogSearch : BaseDialogFragment() {
             }
         })
 
+        binding.recyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val pastVisibleItems =
+                    (recyclerView.layoutManager as GridLayoutManager).findFirstCompletelyVisibleItemPosition()
+                //first item
+
+                val visibleItemCount = recyclerView.layoutManager!!.childCount
+                val totalItemCount = recyclerView.layoutManager!!.itemCount
+
+                if (pastVisibleItems + visibleItemCount >= totalItemCount &&
+                    !isLoading!!
+                    && characterModels?.size!! < total
+                ) {
+                    //End of list
+                    getNextItemsDataApi(binding.edttxtSearchPopupdialogSearch.text.toString())
+                }
+            }
+        })
     }
 
     var total = 0
     lateinit var recyclerCharacterSearchAdapter: RecyclerCharacterSearchAdapter
-    private fun setList(keyWord: String) {
+    private fun setList() {
         binding.recyclerView.visibility = View.VISIBLE
         binding.recyclerView.layoutManager =
             GridLayoutManager(activity, 1, RecyclerView.VERTICAL, false)
-        recyclerCharacterSearchAdapter = RecyclerCharacterSearchAdapter(keyWord,
+        recyclerCharacterSearchAdapter = RecyclerCharacterSearchAdapter(
             characterModels!!, object : OnRecyclerItemClickListener {
                 override fun onRecyclerItemClickListener(position: Int) {
                     Intent(requireActivity(), CharacterDetailsActivity::class.java).also {
@@ -184,12 +209,27 @@ class PopupDialogSearch : BaseDialogFragment() {
         binding.recyclerView.adapter = recyclerCharacterSearchAdapter
     }
 
+    fun highlightKeywordInList(
+        keyWord: String,
+        characterModels: ArrayList<CharacterModel>
+    ): ArrayList<CharacterModel> {
+        for (item in characterModels!!) {
+            item.name =
+                item.name?.replace(
+                    keyWord,
+                    "<span style=\"background-color: #730417\">$keyWord</span>", true
+                )
+        }
+
+        return characterModels
+    }
+
     var compositeDisposable = CompositeDisposable()
     var isLoading = false
-
+    var limit = 40
     fun getSearchDataApi(keyWord: String) {
         var params = getDefaultParams(activity?.application!!, HashMap())
-        params["limit"] = 20
+        params["limit"] = limit
         //items to skip
         params["offset"] = 0
         params["nameStartsWith"] = keyWord
@@ -220,7 +260,9 @@ class PopupDialogSearch : BaseDialogFragment() {
                                 characterModels = responseModel.data.results
                                 total = responseModel.data.total
                                 if (!characterModels.isNullOrEmpty()) {
-                                    setList(keyWord)
+                                    characterModels =
+                                        highlightKeywordInList(keyWord, characterModels!!)
+                                    setList()
                                 }
                             } else {
                             }
@@ -233,6 +275,68 @@ class PopupDialogSearch : BaseDialogFragment() {
                     }
                 })
         )
+    }
+
+    fun getNextItemsDataApi(keyWord: String) {
+        var params = getDefaultParams(activity?.application!!, HashMap())
+        params["limit"] = limit
+        params["offset"] = characterModels?.size!!
+        params["nameStartsWith"] = keyWord
+
+        compositeDisposable.add(
+            startGetMethodUsingRX(
+                URL.getCharactersUrl(),
+                params,
+                object : RemoteCallback {
+                    override fun onStartConnection() {
+                        isLoading = true
+                        loadMore(true)
+                    }
+
+                    override fun onFailureConnection(errorMessage: Any?) {
+                        isLoading = false
+                        loadMore(false)
+                    }
+
+                    override fun onSuccessConnection(response: Any?) {
+                        try {
+                            isLoading = false
+                            loadMore(false)
+                            var responseModel =
+                                JsonParser().getCharactersListResponseModel(response.toString())
+                            if (responseModel != null) {
+                                if (responseModel.data != null && !responseModel.data!!.results.isNullOrEmpty()) {
+                                    responseModel.data!!.results =
+                                        highlightKeywordInList(
+                                            keyWord,
+                                            responseModel.data!!.results
+                                        )
+                                    characterModels!!.addAll(responseModel.data.results)
+                                    recyclerCharacterSearchAdapter.notifyDataSetChanged()
+                                    total = responseModel.data.total
+                                }
+                            }
+                        } catch (e: Exception) {
+                        }
+                    }
+
+                    override fun onLoginAgain(errorMessage: Any?) {
+                        onLoginAgain(errorMessage)
+                    }
+                })
+        )
+    }
+
+    fun loadMore(isAdd: Boolean) {
+        if (isAdd) {
+            var itemModel = CharacterModel()
+            itemModel.holderType = "loadMore"
+            characterModels!!.add(itemModel)
+            recyclerCharacterSearchAdapter.notifyItemInserted(characterModels!!.size - 1)
+        } else {
+            characterModels!!.removeAt(characterModels!!.size - 1)
+            recyclerCharacterSearchAdapter.notifyItemRemoved(characterModels!!.size)
+        }
     }
 
 }

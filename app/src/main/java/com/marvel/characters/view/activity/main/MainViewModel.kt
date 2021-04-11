@@ -35,7 +35,7 @@ class MainViewModel(
     var characterModels: ArrayList<CharacterModel>? = ArrayList()
     var recyclerCharacterHomeAdapter: RecyclerCharacterHomeAdapter
 
-    var limit = 100
+    var limit = 40
     var total = 0
 
     init {
